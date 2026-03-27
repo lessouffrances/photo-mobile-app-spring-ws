@@ -1,7 +1,12 @@
 package com.example.mobileappws.ui.controller;
 
+import com.example.mobileappws.service.UserService;
+import com.example.mobileappws.shared.dto.UserDto;
 import com.example.mobileappws.ui.model.request.UserDetailsRequestModel;
 import com.example.mobileappws.ui.model.response.UserRest;
+import org.apache.catalina.User;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("users") // http://localhost:8080/users
 public class UserController {
 
+    @Autowired
+    UserService userService;
+
     @GetMapping
     public String getUser()
     {
@@ -25,7 +33,12 @@ public class UserController {
     @PostMapping
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails)
     {
-        return null;
+        UserRest returnValue = new UserRest();
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(userDetails, userDto);
+        UserDto createdUser = userService.createUser(userDto);
+        BeanUtils.copyProperties(createdUser, returnValue);
+        return returnValue;
     }
 
     @PutMapping
