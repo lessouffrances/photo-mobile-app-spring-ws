@@ -2,10 +2,8 @@ package com.example.mobileappws.security;
 
 import com.example.mobileappws.ui.model.request.UserLoginRequestModel;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
