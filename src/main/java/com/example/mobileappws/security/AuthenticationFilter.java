@@ -68,7 +68,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
         byte[] secretKeyBytes = Base64.getEncoder().encode(SecurityConstants.TOKEN_SECRET.getBytes());
@@ -85,10 +85,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         // add authorization token to header
         UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
-        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 
         // add public userId to header
         UserDto userDto = userService.getUser(userName);
-        res.addHeader("UserId", userDto.getUserId());
+        response.addHeader("UserId", userDto.getUserId());
     }
  }
