@@ -56,6 +56,11 @@ public class WebSecurity {
             .sessionManagement(session
                 -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+//        SessionManagement explain:
+//        No session is created, no cookie is set
+//        The server remembers nothing between requests
+//        Every single request must prove its identity by carrying the JWT in the Authorization header
+
         return http.build();
     }
 }
