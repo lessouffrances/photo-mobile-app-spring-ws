@@ -40,6 +40,9 @@ public class WebSecurity {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);
         authenticationFilter.setFilterProcessesUrl("/users/login");
 
+        // the AuthorizationFilter obj
+        AuthorizationFilter authorizationFilter = new AuthorizationFilter(authenticationManager);
+
         http
             .cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
@@ -49,7 +52,7 @@ public class WebSecurity {
             )
             .authenticationManager(authenticationManager)
             .addFilter(authenticationFilter)
-            .addFilter(new AuthorizationFilter(authenticationManager))
+            .addFilter(authorizationFilter)
             .sessionManagement(session
                 -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
