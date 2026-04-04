@@ -7,13 +7,7 @@ import com.example.mobileappws.ui.model.response.UserRest;
 import org.apache.catalina.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("users") // http://localhost:8080/users
@@ -22,10 +16,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping
-    public String getUser()
+    // http://localhost:8080/users/o9vMepZFDxGW7DzgLSS24jHWtBo9ir
+    @GetMapping(path="/{id}")
+    public UserRest getUser(@PathVariable String id)
     {
-        return "get user was called";
+        UserRest returnValue = new UserRest();
+        UserDto userDto = userService.getUserByUserId(id);
+        BeanUtils.copyProperties(userDto, returnValue);
+        return returnValue;
     }
 
     @PostMapping
