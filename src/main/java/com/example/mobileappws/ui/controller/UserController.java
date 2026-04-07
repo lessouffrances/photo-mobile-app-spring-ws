@@ -3,6 +3,7 @@ package com.example.mobileappws.ui.controller;
 import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.dto.UserDto;
 import com.example.mobileappws.ui.model.request.UserDetailsRequestModel;
+import com.example.mobileappws.ui.model.response.ErrorMessages;
 import com.example.mobileappws.ui.model.response.UserRest;
 import org.apache.catalina.User;
 import org.springframework.beans.BeanUtils;
@@ -33,9 +34,11 @@ public class UserController {
         consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
         produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
     )
-    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails)
+    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception
     {
         UserRest returnValue = new UserRest();
+
+        if (userDetails.getFirstName().isEmpty()) throw new Exception(ErrorMessages.MISSING_REQUIRED_FILED.getErrorMessage());
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails, userDto);
         UserDto createdUser = userService.createUser(userDto);
