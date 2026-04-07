@@ -1,10 +1,13 @@
 package com.example.mobileappws.service.impl;
 
 import com.example.mobileappws.UserRepository;
+import com.example.mobileappws.exceptions.UserServiceException;
 import com.example.mobileappws.io.entity.UserEntity;
 import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.Utils;
 import com.example.mobileappws.shared.dto.UserDto;
+import com.example.mobileappws.ui.model.response.ErrorMessages;
+import org.apache.catalina.mbeans.MBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -75,6 +78,22 @@ public class UserServiceImpl implements UserService  {
 
         if (userEntity == null) throw new UsernameNotFoundException(userId);
         BeanUtils.copyProperties(userEntity, returnValue);
+        return returnValue;
+    }
+
+    @Override
+    public UserDto updateUser(String userId, UserDto user) {
+        UserDto returnValue = new UserDto();
+        UserEntity userEntity = userRepository.findByUserId(userId);
+        if (userEntity == null) throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        // update firstName
+        userEntity.setFirstName(user.getFirstName());
+        // update lastName
+        userEntity.setLastName(user.getLastName());
+        // save entity
+        UserEntity updatedUserDetails = userRepository.save(userEntity);
+        BeanUtils.copyProperties(updatedUserDetails, returnValue);
         return returnValue;
     }
 }
