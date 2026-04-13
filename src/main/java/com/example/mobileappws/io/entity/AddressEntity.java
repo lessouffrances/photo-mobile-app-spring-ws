@@ -1,13 +1,35 @@
-package com.example.mobileappws.shared.dto;
+package com.example.mobileappws.io.entity;
 
-public class AddressDTO {
+import com.example.mobileappws.shared.dto.UserDto;
+import jakarta.persistence.*;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+@Entity(name="addresses")
+public class AddressEntity implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 8113489809300955905L;
+
+    @Id
+    @GeneratedValue
     private long id;
+    @Column(length = 30, nullable = false)
     private String addressId;
+    @Column(length = 15, nullable = false)
     private String city;
+    @Column(length = 30, nullable = false)
     private String country;
+    @Column(length = 100, nullable = false)
     private String streetName;
+    @Column(length = 7, nullable = false)
     private String postalCode;
+    @Column(length = 10, nullable = false)
     private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
     private UserDto userDetails;
 
     public long getId() {

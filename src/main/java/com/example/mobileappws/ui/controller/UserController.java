@@ -57,8 +57,6 @@ public class UserController {
             throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FILED.getErrorMessage());
 
         UserRest returnValue = new UserRest();
-//        UserDto userDto = new UserDto();
-//        BeanUtils.copyProperties(userDetails, userDto);
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
         UserDto createdUser = userService.createUser(userDto);
