@@ -7,7 +7,6 @@ import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.Utils;
 import com.example.mobileappws.shared.dto.UserDto;
 import com.example.mobileappws.ui.model.response.ErrorMessages;
-import org.apache.catalina.mbeans.MBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
