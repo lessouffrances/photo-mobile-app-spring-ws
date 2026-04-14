@@ -5,6 +5,7 @@ import com.example.mobileappws.exceptions.UserServiceException;
 import com.example.mobileappws.io.entity.UserEntity;
 import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.Utils;
+import com.example.mobileappws.shared.dto.AddressDTO;
 import com.example.mobileappws.shared.dto.UserDto;
 import com.example.mobileappws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
@@ -38,6 +39,14 @@ public class UserServiceImpl implements UserService  {
     public UserDto createUser(UserDto user) {
         if (userRepository.findByEmail(user.getEmail()) != null)
             throw new RuntimeException("Email already exists!");
+
+        // generate public address Id and set it back to the user
+        for (int i=0; i<user.getAddresses().size(); i++) {
+            AddressDTO address = user.getAddresses().get(i);
+            address.setUserDetails(user);
+            address.setAddressId(utils.generateAddressId(30));
+            user.getAddresses().set(i, address);
+        }
 
         ModelMapper modelMapper = new ModelMapper();
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
