@@ -7,6 +7,7 @@ import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.Utils;
 import com.example.mobileappws.shared.dto.UserDto;
 import com.example.mobileappws.ui.model.response.ErrorMessages;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,16 +39,14 @@ public class UserServiceImpl implements UserService  {
         if (userRepository.findByEmail(user.getEmail()) != null)
             throw new RuntimeException("Email already exists!");
 
-        UserEntity userEntity = new UserEntity();
-        BeanUtils.copyProperties(user, userEntity);
-
+        ModelMapper modelMapper = new ModelMapper();
+        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         String publicUserId = utils.generateUserId(30);
         userEntity.setUserId(publicUserId);
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
-        UserDto returnValue = new UserDto();
-        BeanUtils.copyProperties(storedUserDetails, returnValue);
+        UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
         return returnValue;
     }
 
