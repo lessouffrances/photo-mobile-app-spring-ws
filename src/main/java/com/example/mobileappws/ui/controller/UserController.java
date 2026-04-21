@@ -83,16 +83,18 @@ public class UserController {
 
         // http://localhost::8081/users/<userId>
         Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user");
-        Link userAddressesLink = WebMvcLinkBuilder.linkTo(UserController.class)
-                .slash(userId)
-                .slash("addresses")
-                .withRel("addresses");
+        Link userAddressesLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                  .getUserAddresses(userId))
+//                .slash(userId)
+//                .slash("addresses")
+                  .withRel("addresses");
 
-        Link selfLink = WebMvcLinkBuilder.linkTo(UserController.class)
-                .slash(userId)
-                .slash("addresses")
-                .slash(addressId)
-                .withSelfRel();
+        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                  .getUserAddress(addressId, userId))
+//                .slash(userId)
+//                .slash("addresses")
+//                .slash(addressId)
+                  .withSelfRel();
 
 //        returnValue.add(userLink);
 //        returnValue.add(userAddressesLink);
@@ -110,11 +112,10 @@ public class UserController {
         if (userDetails.getFirstName().isEmpty())
             throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FILED.getErrorMessage());
 
-        UserRest returnValue = new UserRest();
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
         UserDto createdUser = userService.createUser(userDto);
-        returnValue = modelMapper.map(createdUser, UserRest.class);
+        UserRest returnValue = modelMapper.map(createdUser, UserRest.class);
         return returnValue;
     }
 
