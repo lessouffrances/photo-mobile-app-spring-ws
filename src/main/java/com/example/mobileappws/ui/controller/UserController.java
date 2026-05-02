@@ -127,8 +127,7 @@ public class UserController {
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
         UserDto createdUser = userService.createUser(userDto);
-        UserRest returnValue = modelMapper.map(createdUser, UserRest.class);
-        return returnValue;
+        return modelMapper.map(createdUser, UserRest.class);
     }
 
     @PutMapping(

@@ -53,6 +53,7 @@ public class WebSecurity {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
+                .requestMatchers(HttpMethod.GET, SecurityConstants.VERIFICATION_EMAIL_URL).permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationManager(authenticationManager)
