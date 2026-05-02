@@ -14,4 +14,5 @@ public interface UserRepository extends PagingAndSortingRepository<UserEntity, L
     // Spring Data JPA is using the names to convert to SQL to query the DB
     UserEntity findByEmail(String email);
     UserEntity findByUserId(String userId);
+    UserEntity findUserByEmailVerificationToken(String token);
 }
