@@ -2,12 +2,14 @@ package com.example.mobileappws.service.impl;
 
 import com.example.mobileappws.UserRepository;
 import com.example.mobileappws.exceptions.UserServiceException;
+import com.example.mobileappws.io.entity.PasswordResetTokenEntity;
 import com.example.mobileappws.io.entity.UserEntity;
 import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.shared.AmazonSES;
 import com.example.mobileappws.shared.Utils;
 import com.example.mobileappws.shared.dto.AddressDto;
 import com.example.mobileappws.shared.dto.UserDto;
+import com.example.mobileappws.ui.model.request.PasswordResetRequestModel;
 import com.example.mobileappws.ui.model.response.ErrorMessages;
 import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
@@ -155,6 +157,29 @@ public class UserServiceImpl implements UserService  {
                 returnValue = true;
             }
         }
+        return returnValue;
+    }
+
+    @Override
+    public boolean requestPasswordReset(String email) {
+        boolean returnValue = false;
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (userEntity == null) {
+            return returnValue;
+        }
+
+        String token = Utils.generatePasswordResetToken(userEntity.getUserId());
+        PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
+        passwordResetTokenEntity.setToken(token);
+        passwordResetTokenEntity.setUserDetails(userEntity);
+        passwordResetTokenRepository.save(passwordResetTokenEntity);
+
+        returnValue = new AmazonSES().sendPasswordResetRequest(
+            userEntity.getFirstName(),
+            userEntity.getEmail(),
+            token
+        );
+
         return returnValue;
     }
 }
