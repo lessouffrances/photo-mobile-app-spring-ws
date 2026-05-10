@@ -4,6 +4,7 @@ import com.example.mobileappws.UserRepository;
 import com.example.mobileappws.exceptions.UserServiceException;
 import com.example.mobileappws.io.entity.UserEntity;
 import com.example.mobileappws.service.UserService;
+import com.example.mobileappws.shared.AmazonSES;
 import com.example.mobileappws.shared.Utils;
 import com.example.mobileappws.shared.dto.AddressDto;
 import com.example.mobileappws.shared.dto.UserDto;
@@ -60,6 +61,9 @@ public class UserServiceImpl implements UserService  {
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
         UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
+
+        // Send email message to user to verify their email address
+        new AmazonSES().verifyEmail(returnValue);
         return returnValue;
     }
 
