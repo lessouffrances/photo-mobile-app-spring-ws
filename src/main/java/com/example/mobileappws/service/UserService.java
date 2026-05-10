@@ -1,7 +1,6 @@
 package com.example.mobileappws.service;
 
 import com.example.mobileappws.shared.dto.UserDto;
-import com.example.mobileappws.ui.model.response.OperationStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;

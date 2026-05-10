@@ -5,6 +5,7 @@ import com.example.mobileappws.service.UserService;
 import com.example.mobileappws.service.AddressService;
 import com.example.mobileappws.shared.dto.AddressDto;
 import com.example.mobileappws.shared.dto.UserDto;
+import com.example.mobileappws.ui.model.request.PasswordResetRequestModel;
 import com.example.mobileappws.ui.model.request.UserDetailsRequestModel;
 import com.example.mobileappws.ui.model.response.*;
 import org.modelmapper.ModelMapper;
@@ -39,8 +40,7 @@ public class UserController {
     {
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = userService.getUserByUserId(id);
-        UserRest returnValue = modelMapper.map(userDto, UserRest.class);
-        return returnValue;
+        return modelMapper.map(userDto, UserRest.class);
     }
 
     // http://localhost:8080/users?page=0&limit=50
@@ -115,11 +115,12 @@ public class UserController {
         return EntityModel.of(returnValue, Arrays.asList(userLink, userAddressesLink, selfLink));
     }
 
+    // http://localhost:8080/mobile-app-ws/users/email-verification?token=sometokenstring
     @GetMapping(path = "/email-verification",
-        produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public OperationStatus verifyEmailToken(@RequestParam(value = "token") String token)
+        produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public OperationStatusModel verifyEmailToken(@RequestParam(value = "token") String token)
     {
-        OperationStatus returnValue = new OperationStatus();
+        OperationStatusModel returnValue = new OperationStatusModel();
         returnValue.setOperationName(RequestOperationName.VERIFY_EMAIL.name());
         boolean isVerified = userService.verifyEmailToken(token);
 
@@ -146,6 +147,25 @@ public class UserController {
         return modelMapper.map(createdUser, UserRest.class);
     }
 
+    // http://localhost:8080/mobile-app-ws/users/password-reset-request
+    @PostMapping(
+        path = "password-reset-request",
+        produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
+        consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }
+    )
+    public OperationStatusModel requestReset(@RequestBody PasswordResetRequestModel passwordResetRequestModel)
+    {
+        OperationStatusModel returnValue = new OperationStatusModel();
+        boolean operationResult = userService.requestPasswordReset(passwordResetRequestModel.getEmail());
+        returnValue.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+        returnValue.setOperationResult(RequestOperationStatus.FAIL.name());
+
+        if (operationResult) {
+            returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+        }
+        return returnValue;
+    }
+
     @PutMapping(
         path="/{id}",
         consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
@@ -169,9 +189,9 @@ public class UserController {
     @DeleteMapping(path="/{id}",
         produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
     )
-    public OperationStatus deleteUser(@PathVariable String id)
+    public OperationStatusModel deleteUser(@PathVariable String id)
     {
-        OperationStatus returnValue = new OperationStatus();
+        OperationStatusModel returnValue = new OperationStatusModel();
         returnValue.setOperationName(RequestOperationName.DELETE.name());
         userService.deleteUser(id);
         returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
