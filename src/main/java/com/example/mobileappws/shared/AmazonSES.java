@@ -10,7 +10,7 @@ import software.amazon.awssdk.services.ses.model.*;
 public class AmazonSES {
 
     final String FROM = "reirasouffrances.x.x@gmail.com";
-    final String SUBJECT = "One last step to complete your registration with PhotoApp";
+    final String SUBJECT = "One last step to complete your registration with Layla's Backend App";
     final String PASSWORD_RESET_SUBJECT = "Password reset request";
 
     final String HTMLBODY = "<h1>Please verify your email address</h1>"
@@ -30,7 +30,7 @@ public class AmazonSES {
         + "<p>Hi, $firstName!</p> "
         + "<p>Someone has requested to reset your password with our project. If it were not you, please ignore it."
         + " otherwise please click on the link below to set a new password: "
-        + "<a href='http://localhost:8080/verification-service/password-reset.html?token=$tokenValue'>"
+        + "<a href='http://3.133.12.245:8080/verification-service/password-reset.html?token=$tokenValue'>"
         + " Click this link to Reset Password"
         + "</a><br/><br/>"
         + "Thank you!";
@@ -39,7 +39,7 @@ public class AmazonSES {
         + "Hi, $firstName! "
         + "Someone has requested to reset your password with our project. If it were not you, please ignore it."
         + " otherwise please open the link below in your browser window to set a new password:"
-        + " http://localhost:8080/verification-service/password-reset.html?token=$tokenValue"
+        + " http://3.133.12.245:8080/verification-service/password-reset.html?token=$tokenValue"
         + " Thank you!";
 
     public void verifyEmail(UserDto userDto) {
@@ -83,7 +83,7 @@ public class AmazonSES {
         boolean returnValue = false;
 
         SesClient client = SesClient.builder()
-            .region(Region.US_EAST_1)
+            .region(Region.US_EAST_2)
             .build();
 
         String htmlBodyWithToken = PASSWORD_RESET_HTMLBODY.replace("$tokenValue", token);

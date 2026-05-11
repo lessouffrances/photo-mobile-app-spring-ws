@@ -71,10 +71,14 @@ public class Utils {
 
     public static String generatePasswordResetToken(String userId)
     {
+        SecretKey secretKey = Keys.hmacShaKeyFor(
+            SecurityConstants.getTokenSecret().getBytes(StandardCharsets.UTF_8)
+        );
+
         String token = Jwts.builder()
             .setSubject(userId)
             .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.PASSWORD_RESET_EXPIRATION_TIME))
-            .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
+            .signWith(secretKey)
             .compact();
         return token;
     }

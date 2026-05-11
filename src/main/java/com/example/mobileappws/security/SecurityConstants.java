@@ -13,9 +13,7 @@ public class SecurityConstants {
     public static final String HEADER_STRING = "Authorization";
     public static final String SIGN_UP_URL = "/users";
     public static final String VERIFICATION_EMAIL_URL = "/users/email-verification";
-
-    // this is at least 64 char, unique to my application
-//    public static final String TOKEN_SECRET = "aB3kP9mXqL2nRvYwZjCdEuFgHiOsStUbNpQrTvWxYz0123456789AbCdEfGhIjKl";
+    public static final String PASSWORD_RESET_REQUEST_URL = "/users/password-reset-request";
 
     public static String getTokenSecret() {
         Environment environment = (Environment) SpringApplicationContext.getBean("environment");

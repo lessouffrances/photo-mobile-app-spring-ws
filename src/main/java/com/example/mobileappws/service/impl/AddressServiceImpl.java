@@ -1,7 +1,7 @@
 package com.example.mobileappws.service.impl;
 
-import com.example.mobileappws.AddressRepository;
-import com.example.mobileappws.UserRepository;
+import com.example.mobileappws.io.repository.AddressRepository;
+import com.example.mobileappws.io.repository.UserRepository;
 import com.example.mobileappws.io.entity.AddressEntity;
 import com.example.mobileappws.io.entity.UserEntity;
 import com.example.mobileappws.service.AddressService;

@@ -1,4 +1,4 @@
-package com.example.mobileappws;
+package com.example.mobileappws.io.repository;
 
 import com.example.mobileappws.io.entity.AddressEntity;
 import com.example.mobileappws.io.entity.UserEntity;
