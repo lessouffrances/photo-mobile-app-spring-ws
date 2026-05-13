@@ -1,6 +1,7 @@
 package com.example.mobileappws.shared;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.example.mobileappws.shared.dto.UserDto;
 import software.amazon.awssdk.regions.Region;

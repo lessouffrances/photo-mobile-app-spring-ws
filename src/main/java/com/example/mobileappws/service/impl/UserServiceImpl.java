@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService  {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private AmazonSES amazonSES;
+    AmazonSES amazonSES;
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService  {
         String publicUserId = utils.generateUserId(30);
         userEntity.setUserId(publicUserId);
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userEntity.setEmailVerificationToken(Utils.generateEmailVerificationToken(publicUserId));
+        userEntity.setEmailVerificationToken(utils.generateEmailVerificationToken(publicUserId));
         userEntity.setEmailVerificationStatus(false);
 
         UserEntity storedUserDetails = userRepository.save(userEntity);

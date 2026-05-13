@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +14,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Random;
 
-@Component
+@Service
 public class Utils {
     private final Random RANDOM = new SecureRandom();
     private final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -54,7 +55,7 @@ public class Utils {
         return tokenExpirationDate.before(todayDate);
     }
 
-    public static String generateEmailVerificationToken(String userId)
+    public String generateEmailVerificationToken(String userId)
     {
         SecretKey secretKey = Keys.hmacShaKeyFor(
             SecurityConstants.getTokenSecret().getBytes(StandardCharsets.UTF_8)
